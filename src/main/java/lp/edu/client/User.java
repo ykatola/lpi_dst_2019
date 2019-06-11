@@ -1,3 +1,5 @@
+package lp.edu.client;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import javax.xml.bind.annotation.XmlAccessType;

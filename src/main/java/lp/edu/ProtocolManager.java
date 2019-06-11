@@ -1,6 +1,8 @@
-final class ProtocolManager {
+package lp.edu;
 
-    enum Request {
+public final class ProtocolManager {
+
+    public enum Request {
         PING((byte) 1, "Ping", 0),
         ECHO((byte) 3, "Echo", 1),
         LOGIN((byte) 5, "Login", 2),
@@ -10,9 +12,9 @@ final class ProtocolManager {
         RECEIVE_MESSAGE((byte) 25, "rcvmessage", 0),
         RECEIVE_FILE((byte) 30, "rcvfile", 0);
 
-        final byte value;
-        final String type;
-        final int argumentsAmount;
+        public final byte value;
+        public final String type;
+        public final int argumentsAmount;
 
         Request(byte value, String type, int argumentsAmount) {
             this.value = value;
@@ -21,7 +23,7 @@ final class ProtocolManager {
         }
     }
 
-    enum Response {
+    public enum Response {
         PING_RESPONSE(2, "Ping is okay!"),
         SERVER_ERROR(100, "Server error happens!"),
         WRONG_SIZE(101, "Wrong size!"),
@@ -42,8 +44,8 @@ final class ProtocolManager {
         NEED_TO_SERIALIZE_MESSAGE(51, "Serialization need"),
         COMMON_BAD_RESPONSE(400, "Something went wrong..");
 
-        final int responseCode;
-        final String information;
+        public final int responseCode;
+        public final String information;
 
         Response(int responseCode, String information) {
             this.responseCode = responseCode;
