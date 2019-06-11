@@ -16,7 +16,4 @@ public class Users {
         return items;
     }
 
-    public void setItems(List<String> items) {
-        this.items = items;
-    }
 }

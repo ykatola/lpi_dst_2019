@@ -6,10 +6,6 @@ import java.util.Optional;
 
 public class RequestHandler {
 
-    private static boolean isWaitingEcho = false;
-    private static boolean isWaitingMessage = false;
-    private static boolean isWaitingList = false;
-    private static boolean isLoggedIn = false;
     private MessageClient<String> messageClient;
 
     public RequestHandler(MessageClient<String> messageClient) {
@@ -36,10 +32,8 @@ public class RequestHandler {
             case LOGIN:
                 return messageClient.login(parameters[0], parameters[1]);
             case LIST:
-                isWaitingList = true;
                 return messageClient.list();
             case MSG:
-                isWaitingMessage = true;
                 return messageClient.message(parameters[0], parameters[1]);
             default:
                 return null;

@@ -2,6 +2,7 @@ package lp.edu;
 
 import lp.edu.client.MessageClient;
 import lp.edu.client.impl.JerseyClient;
+import lp.edu.client.impl.MQClient;
 import lp.edu.client.impl.RMIClient;
 import lp.edu.client.impl.TCPClient;
 
@@ -18,6 +19,7 @@ public class Main {
         System.out.println("1. RMI Client.");
         System.out.println("2. TCP Client.");
         System.out.println("3. REST Client.");
+        System.out.println("4. MQ Client.");
         int num = sc.nextInt();
         MessageClient<String> messageClient = null;
         switch (num) {
@@ -33,6 +35,9 @@ public class Main {
                 break;
             case 3:
                 messageClient = JerseyClient.newClient("http://localhost:8080/chat/server/");
+                break;
+            case 4:
+                messageClient = MQClient.newClient("tcp://localhost:61616");
                 break;
             default:
                 throw new IllegalArgumentException("Choose one of available clients!");

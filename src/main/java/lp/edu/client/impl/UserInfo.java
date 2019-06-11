@@ -8,11 +8,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class UserInfo {
 
-    public UserInfo(String login, String password) {
-        this.login = login;
-        this.password = password;
-    }
-
     public UserInfo() {
     }
 
