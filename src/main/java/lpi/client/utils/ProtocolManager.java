@@ -1,4 +1,4 @@
-package lp.edu;
+package lpi.client.utils;
 
 public final class ProtocolManager {
 

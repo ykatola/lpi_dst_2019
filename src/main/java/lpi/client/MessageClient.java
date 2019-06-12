@@ -1,4 +1,4 @@
-package lp.edu.client;
+package lpi.client;
 
 public interface MessageClient<T> {
     T ping();

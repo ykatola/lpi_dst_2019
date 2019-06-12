@@ -1,6 +1,6 @@
-package lp.edu;
+package lpi.client.utils;
 
-import lp.edu.client.MessageClient;
+import lpi.client.MessageClient;
 
 import java.util.Optional;
 
@@ -12,7 +12,7 @@ public class RequestHandler {
         this.messageClient = messageClient;
     }
 
-    String executeRequest(String command) {
+    public String executeRequest(String command) {
         Optional<ProtocolManager.Request> request = RequestHelper.mapToRequest(command);
 
         if (!request.isPresent()) {

@@ -1,4 +1,4 @@
-package lp.edu.client.impl;
+package lpi.client.impl;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

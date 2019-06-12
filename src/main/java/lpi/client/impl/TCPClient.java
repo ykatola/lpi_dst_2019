@@ -1,7 +1,7 @@
-package lp.edu.client.impl;
+package lpi.client.impl;
 
-import lp.edu.ProtocolManager;
-import lp.edu.client.MessageClient;
+import lpi.client.MessageClient;
+import lpi.client.utils.ProtocolManager;
 
 import java.io.*;
 import java.net.Socket;

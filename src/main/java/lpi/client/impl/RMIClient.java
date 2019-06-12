@@ -1,6 +1,6 @@
-package lp.edu.client.impl;
+package lpi.client.impl;
 
-import lp.edu.client.MessageClient;
+import lpi.client.MessageClient;
 import lpi.server.rmi.IServer;
 
 import java.rmi.NotBoundException;

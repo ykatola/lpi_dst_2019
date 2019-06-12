@@ -1,4 +1,4 @@
-package lp.edu;
+package lpi.client.utils;
 
 import java.util.Arrays;
 import java.util.List;

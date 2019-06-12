@@ -1,4 +1,4 @@
-package lp.edu.client.impl;
+package lpi.client.impl;
 
 public class SOAPClient {
 }

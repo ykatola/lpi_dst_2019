@@ -1,7 +1,7 @@
-package lp.edu.client.impl;
+package lpi.client.impl;
 
-import lp.edu.client.MessageClient;
-import lp.edu.client.Users;
+import lpi.client.MessageClient;
+import lpi.client.model.Users;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
 import javax.ws.rs.client.Client;

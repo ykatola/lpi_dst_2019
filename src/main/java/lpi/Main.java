@@ -1,10 +1,11 @@
-package lp.edu;
+package lpi;
 
-import lp.edu.client.MessageClient;
-import lp.edu.client.impl.JerseyClient;
-import lp.edu.client.impl.MQClient;
-import lp.edu.client.impl.RMIClient;
-import lp.edu.client.impl.TCPClient;
+import lpi.client.MessageClient;
+import lpi.client.impl.JerseyClient;
+import lpi.client.impl.MQClient;
+import lpi.client.impl.RMIClient;
+import lpi.client.impl.TCPClient;
+import lpi.client.utils.RequestHandler;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
