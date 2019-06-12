@@ -63,4 +63,9 @@ public class JerseyClient implements MessageClient<String> {
         Users users = response.readEntity(Users.class);
         return String.join(",", users.getItems());
     }
+
+    @Override
+    public void exit() {
+
+    }
 }

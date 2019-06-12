@@ -10,7 +10,8 @@ public final class ProtocolManager {
         MSG((byte) 15, "Msg", 2),
         FILE((byte) 20, "File", 3),
         RECEIVE_MESSAGE((byte) 25, "rcvmessage", 0),
-        RECEIVE_FILE((byte) 30, "rcvfile", 0);
+        RECEIVE_FILE((byte) 30, "rcvfile", 0),
+        EXIT((byte) 100, "Exit", 0);
 
         public final byte value;
         public final String type;

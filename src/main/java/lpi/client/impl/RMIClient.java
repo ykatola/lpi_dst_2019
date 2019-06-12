@@ -29,7 +29,7 @@ public class RMIClient implements MessageClient<String> {
         try {
             proxy.ping();
         } catch (RemoteException e) {
-            return e.getMessage();
+            return e.getCause().getMessage();
         }
         return "Ping is okay";
     }
@@ -39,7 +39,7 @@ public class RMIClient implements MessageClient<String> {
         try {
             return proxy.echo(message);
         } catch (RemoteException e) {
-            return e.getMessage();
+            return e.getCause().getMessage();
         }
     }
 
@@ -49,7 +49,7 @@ public class RMIClient implements MessageClient<String> {
             try {
                 sessionId = proxy.login(receiver, password);
             } catch (RemoteException e) {
-                return e.getMessage();
+                return e.getCause().getMessage();
             }
             return "Successful registration!";
         } else {
@@ -59,7 +59,8 @@ public class RMIClient implements MessageClient<String> {
             } catch (RemoteException e) {
                 return e.getCause().getMessage();
             }
-        }    }
+        }
+    }
 
     @Override
     public String message(String receiver, String message) {
@@ -69,7 +70,8 @@ public class RMIClient implements MessageClient<String> {
             return "Message sent to " + receiver;
         } catch (RemoteException e) {
             return e.getCause().getMessage();
-        }    }
+        }
+    }
 
     @Override
     public String list() {
@@ -77,6 +79,15 @@ public class RMIClient implements MessageClient<String> {
             return Arrays.toString(proxy.listUsers(sessionId));
         } catch (RemoteException e) {
             return e.getCause().getMessage();
+        }
+    }
+
+    @Override
+    public void exit() {
+        try {
+            proxy.exit(sessionId);
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 }

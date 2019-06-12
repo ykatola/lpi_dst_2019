@@ -6,6 +6,8 @@ import java.util.Optional;
 
 public class RequestHandler {
 
+    private static final String EXIT = "exit";
+
     private MessageClient<String> messageClient;
 
     public RequestHandler(MessageClient<String> messageClient) {
@@ -35,6 +37,9 @@ public class RequestHandler {
                 return messageClient.list();
             case MSG:
                 return messageClient.message(parameters[0], parameters[1]);
+            case EXIT:
+                messageClient.exit();
+                return EXIT;
             default:
                 return null;
         }

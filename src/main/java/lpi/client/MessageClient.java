@@ -11,7 +11,5 @@ public interface MessageClient<T> {
 
     T list();
 
-    default String unknownErrorMessage() {
-        return "Unknown error happened...";
-    }
+    void exit();
 }

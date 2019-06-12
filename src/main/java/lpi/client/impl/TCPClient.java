@@ -56,7 +56,7 @@ public class TCPClient implements MessageClient<String> {
             out.writeInt(dataToSend.length);
             out.write(dataToSend);
         } catch (IOException e) {
-            e.printStackTrace();
+            return e.getCause().getMessage();
         }
         return readResponse();
     }
@@ -69,9 +69,8 @@ public class TCPClient implements MessageClient<String> {
             Optional<ProtocolManager.Response> serverResponse = toResponse(message);
             return serverResponse.map(response -> response.information).orElse(null);
         } catch (IOException e) {
-            e.printStackTrace();
+            return e.getCause().getMessage();
         }
-        return null;
     }
 
     private Optional<ProtocolManager.Response> toResponse(byte[] message) {
@@ -103,7 +102,7 @@ public class TCPClient implements MessageClient<String> {
             out.writeInt(dataToSend.length);
             out.write(dataToSend);
         } catch (IOException e) {
-            e.printStackTrace();
+            return e.getCause().getMessage();
         }
         byte[] response = new byte[0];
         try {
@@ -111,7 +110,7 @@ public class TCPClient implements MessageClient<String> {
             response = new byte[contentSize];
             in.readFully(response);
         } catch (IOException e) {
-            e.printStackTrace();
+            return e.getCause().getMessage();
         }
         return new String(response);
     }
@@ -120,17 +119,17 @@ public class TCPClient implements MessageClient<String> {
     public String login(String receiver, String password) {
         byte[] byteCommand = new byte[1];
         byteCommand[0] = 5;
-        byte[] response = new byte[0];
+        byte[] response;
         try {
             response = concatArray(byteCommand, serialize(new String[]{receiver, password}));
         } catch (IOException e) {
-            e.printStackTrace();
+            return e.getCause().getMessage();
         }
         try {
             out.writeInt(response.length);
             out.write(response);
         } catch (IOException e) {
-            e.printStackTrace();
+            return e.getCause().getMessage();
         }
         return readResponseWithCode();
     }
@@ -142,17 +141,17 @@ public class TCPClient implements MessageClient<String> {
         }
         byte[] byteCommand = new byte[1];
         byteCommand[0] = 15;
-        byte[] response = new byte[0];
+        byte[] response;
         try {
             response = concatArray(byteCommand, serialize(new String[]{receiver, message}));
         } catch (IOException e) {
-            e.printStackTrace();
+            return e.getCause().getMessage();
         }
         try {
             out.writeInt(response.length);
             out.write(response);
         } catch (IOException e) {
-            e.printStackTrace();
+            return e.getCause().getMessage();
         }
         return readResponseWithCode();
     }
@@ -181,6 +180,17 @@ public class TCPClient implements MessageClient<String> {
         return parseList(message, ", ");
     }
 
+    @Override
+    public void exit() {
+        try {
+            in.close();
+            out.close();
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private <T> byte[] serialize(T parameters) throws IOException {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();
              ObjectOutputStream os = new ObjectOutputStream(out)) {
@@ -202,18 +212,17 @@ public class TCPClient implements MessageClient<String> {
                 return serverResponse.get().information;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            return e.getCause().getMessage();
         }
-        return "Unknown response";
     }
 
     private String parseList(byte[] message, String delimiter) {
         StringBuilder stringBuilder = new StringBuilder();
-        String[] userList = new String[0];
+        String[] userList;
         try {
             userList = deserialize(message, String[].class);
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            return e.getCause().getMessage();
         }
         int count = 0;
         for (String userName : userList) {

@@ -38,10 +38,8 @@ public class MQClient implements MessageClient<String> {
             Message msg = session.createMessage();
             return sendMessage(SEND_PING_QUEUE, msg);
         } catch (JMSException e) {
-            e.printStackTrace();
+            return e.getCause().getMessage();
         }
-        return null;
-
     }
 
     @Override
@@ -50,9 +48,8 @@ public class MQClient implements MessageClient<String> {
             Message msg = session.createTextMessage(letter);
             return sendMessage(SEND_ECHO_QUEUE, msg);
         } catch (JMSException e) {
-            e.printStackTrace();
+            return e.getCause().getMessage();
         }
-        return null;
     }
 
     @Override
@@ -64,9 +61,8 @@ public class MQClient implements MessageClient<String> {
             msg.setString("password", password);
             return sendMessage(LOGIN_QUEUE, msg);
         } catch (JMSException e) {
-            e.printStackTrace();
+            return e.getCause().getMessage();
         }
-        return null;
     }
 
     @Override
@@ -77,9 +73,8 @@ public class MQClient implements MessageClient<String> {
             msg.setString("message", message);
             return sendMessage(SEND_MSG_QUEUE, msg);
         } catch (JMSException e) {
-            e.printStackTrace();
+            return e.getCause().getMessage();
         }
-        return null;
     }
 
     @Override
@@ -88,9 +83,17 @@ public class MQClient implements MessageClient<String> {
             Message message = session.createMessage();
             return sendMessage(LIST_USERS_QUEUE, message);
         } catch (JMSException e) {
+            return e.getCause().getMessage();
+        }
+    }
+
+    @Override
+    public void exit() {
+        try {
+            session.close();
+        } catch (JMSException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     private String sendMessage(String queueName, Message msg) {
@@ -125,8 +128,7 @@ public class MQClient implements MessageClient<String> {
             return content;
 
         } catch (JMSException | IOException e) {
-            e.printStackTrace();
+            return e.getCause().getMessage();
         }
-        return null;
     }
 }
