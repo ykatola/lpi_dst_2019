@@ -1,4 +1,4 @@
-# It is simple maven project with one class - lp.edu.Main 
+# It is multi-client application
 Predefined conditions to run application (either first or second):
 1) Java installed
 2) Maven installed
