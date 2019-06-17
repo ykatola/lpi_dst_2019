@@ -4,6 +4,7 @@ import lpi.client.MessageClient;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Optional;
 
 public class RequestHandler {
@@ -21,12 +22,13 @@ public class RequestHandler {
         Optional<ProtocolManager.Request> request = RequestHelper.mapToRequest(command);
 
         if (!request.isPresent()) {
-            throw new IllegalArgumentException("Command " + command + " is unknown.");
+            return "Command " + command + " is unknown. Please try one of the known commands: " +
+                    Arrays.toString(ProtocolManager.Request.values());
         }
 
         String[] parameters = RequestHelper.splitCommand(command);
         if (parameters.length != request.get().argumentsAmount) {
-            throw new RuntimeException("Command " + command + " must contain " + request.get().argumentsAmount + " arguments!");
+           return "Command " + command + " must contain " + request.get().argumentsAmount + " arguments!";
         }
 
         switch (request.get()) {
