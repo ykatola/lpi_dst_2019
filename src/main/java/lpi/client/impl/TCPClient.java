@@ -202,6 +202,7 @@ public class TCPClient implements MessageClient<String> {
             in.close();
             out.close();
             socket.close();
+            System.out.println("Exited from " + getClass().getSimpleName());
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -20,13 +20,18 @@ public class RMIClient implements MessageClient<String> {
     private Timer timer;
 
 
-    private RMIClient(String ip, int port) throws RemoteException, NotBoundException {
-        Registry registry = LocateRegistry.getRegistry(ip, port);
-        proxy = (IServer) registry.lookup(IServer.RMI_SERVER_NAME);
+    private RMIClient(String ip, int port) {
+        Registry registry = null;
+        try {
+            registry = LocateRegistry.getRegistry(ip, port);
+            proxy = (IServer) registry.lookup(IServer.RMI_SERVER_NAME);
+        } catch (RemoteException | NotBoundException e) {
+            e.printStackTrace();
+        }
         timer = new Timer();
     }
 
-    public static RMIClient newRMIClient(String ip, int port) throws RemoteException, NotBoundException {
+    public static RMIClient newClient(String ip, int port) {
         return new RMIClient(ip, port);
     }
 
@@ -99,6 +104,7 @@ public class RMIClient implements MessageClient<String> {
         try {
             timer.cancel();
             proxy.exit(sessionId);
+            System.out.println("Exited from " + getClass().getSimpleName());
         } catch (RemoteException e) {
             e.printStackTrace();
         }

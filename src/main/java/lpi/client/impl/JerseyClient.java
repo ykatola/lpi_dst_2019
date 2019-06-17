@@ -87,7 +87,7 @@ public class JerseyClient implements MessageClient<String> {
 
     @Override
     public void exit() {
-
+        System.out.println("Exited from " + getClass().getSimpleName());
     }
 
     @Override

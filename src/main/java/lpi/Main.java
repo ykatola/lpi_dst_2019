@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class Main {
 
     private static final Scanner sc = new Scanner(System.in);
+    private static final String DEFAULT_IP = "localhost";
 
     public static void main(String[] args) {
         while (true) {
@@ -23,25 +24,31 @@ public class Main {
             System.out.println("6. Exit.");
             int num = sc.nextInt();
             MessageClient<String> messageClient = null;
+            System.out.println("Enter number of port you want to use: ");
+            int port = sc.nextInt();
+            System.out.println("Enter host you want connect to (or type 'd' to use default - localhost");
+            String ip;
+            String ipInput = sc.next();
+            if (ipInput.equals("d")) {
+                ip = DEFAULT_IP;
+            } else {
+                ip = ipInput;
+            }
             switch (num) {
                 case 1:
-                    try {
-                        messageClient = RMIClient.newRMIClient("localhost", 4322);
-                    } catch (RemoteException | NotBoundException e) {
-                        e.printStackTrace();
-                    }
+                    messageClient = RMIClient.newClient(ip, port);
                     break;
                 case 2:
-                    messageClient = TCPClient.newClient("localhost", 4321);
+                    messageClient = TCPClient.newClient(ip, port);
                     break;
                 case 3:
-                    messageClient = JerseyClient.newClient("http://localhost:8080/chat/server/");
+                    messageClient = JerseyClient.newClient(String.format("http://%s:%s/chat/server/", ip, port));
                     break;
                 case 4:
-                    messageClient = MQClient.newClient("tcp://localhost:61616");
+                    messageClient = MQClient.newClient(String.format("tcp://%s:%s", ip, port));
                     break;
                 case 5:
-                    messageClient = SOAPClient.newClient("http://localhost:4323/chat?wsdl");
+                    messageClient = SOAPClient.newClient(String.format("http://%s:%s/chat?wsdl", ip, port));
                     break;
                 case 6:
                     System.exit(0);

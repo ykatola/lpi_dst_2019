@@ -110,6 +110,7 @@ public class SOAPClient implements MessageClient<String> {
             user = null;
             timer.cancel();
             serverProxy.exit(sessionId);
+            System.out.println("Exited from " + getClass().getSimpleName());
         } catch (ArgumentFault | ServerFault argumentFault) {
             argumentFault.printStackTrace();
         }

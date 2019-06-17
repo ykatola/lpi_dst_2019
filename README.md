@@ -18,6 +18,11 @@ mvn exec:java -D"exec.mainClass"="lpi.Main"
 5. TCP Client.
 6. Exit
 
+* Then you should be able to choose port and ip address of server to connect to
+1. In port section use only numbers to select port.
+2. In ip section enter ip address in form like - 0.0.0.127 or type 'd' to use default - 'localhost'
+3. Then, after successful connection you will be able to execute commands.
+
 * Every client has implemented functions you can run by entering one of the following command:
 1. ping
 2. echo {arg}

@@ -110,6 +110,8 @@ public class MQClient implements MessageClient<String> {
     public void exit() {
         try {
             session.close();
+            connection.close();
+            System.out.println("Exited from " + getClass().getSimpleName());
         } catch (JMSException e) {
             e.printStackTrace();
         }
