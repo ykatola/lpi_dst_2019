@@ -67,7 +67,7 @@ public class JerseyClient implements MessageClient<String> {
     public String list() {
         Response response = webTarget.path("/users").request().accept(MediaType.APPLICATION_JSON_TYPE).get(Response.class);
         if (response.getStatus() == 200) {
-            Users users = response.readEntity(Users.class);
+            Items users = response.readEntity(Items.class);
             return String.join(",", users.getItems());
         } else {
             return response.getStatus() + ": " + response.readEntity(String.class);
