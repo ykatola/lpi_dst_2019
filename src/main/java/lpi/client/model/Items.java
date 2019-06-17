@@ -1,15 +1,18 @@
 package lpi.client.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
 @XmlRootElement
-public class Users {
+@XmlAccessorType(XmlAccessType.PROPERTY)
+public class Items {
 
     private List<String> items = new ArrayList<>();
 
-    public Users() {
+    public Items() {
     }
 
     public List<String> getItems() {
@@ -20,3 +23,4 @@ public class Users {
         this.items = items;
     }
 }
+

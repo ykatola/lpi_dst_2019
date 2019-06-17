@@ -1,4 +1,4 @@
-package lpi.client.impl;
+package lpi.client.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -6,9 +6,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class UserInfo {
+public class User {
 
-    public UserInfo() {
+    public User() {
     }
 
     private String login;

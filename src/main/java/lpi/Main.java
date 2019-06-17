@@ -28,7 +28,7 @@ public class Main {
             switch (num) {
                 case 1:
                     try {
-                        messageClient = RMIClient.newRMIClient("localhost", 4321);
+                        messageClient = RMIClient.newRMIClient("localhost", 4322);
                     } catch (RemoteException | NotBoundException e) {
                         e.printStackTrace();
                     }
@@ -44,6 +44,7 @@ public class Main {
                     break;
                 case 5:
                     System.exit(0);
+                    break;
                 default:
                     throw new IllegalArgumentException("Choose one of available clients!");
             }

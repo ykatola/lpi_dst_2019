@@ -6,11 +6,9 @@ import lpi.client.utils.ProtocolManager;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 public class TCPClient implements MessageClient<String> {
 
@@ -19,8 +17,9 @@ public class TCPClient implements MessageClient<String> {
     private DataInputStream in;
     private final String ip;
     private final int port;
-    private ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
     private boolean isLoggedIn;
+    private Timer timer;
+    private static final String PATH_TO_SAVE_FILES = "Some path";
 
     private TCPClient(String ip, int port) {
         this.ip = ip;
@@ -73,6 +72,10 @@ public class TCPClient implements MessageClient<String> {
         }
     }
 
+    private void readResponseMessage() {
+
+    }
+
     private Optional<ProtocolManager.Response> toResponse(byte[] message) {
         List<ProtocolManager.Response> responses = Arrays.asList(ProtocolManager.Response.values());
         Optional<ProtocolManager.Response> response = responses.stream()
@@ -104,7 +107,7 @@ public class TCPClient implements MessageClient<String> {
         } catch (IOException e) {
             return e.getCause().getMessage();
         }
-        byte[] response = new byte[0];
+        byte[] response;
         try {
             int contentSize = in.readInt();
             response = new byte[contentSize];
@@ -181,13 +184,98 @@ public class TCPClient implements MessageClient<String> {
     }
 
     @Override
+    public String sendFile(String receiver, File file) throws IOException {
+        byte[] response = handleFile(receiver, file);
+        try {
+            out.writeInt(response.length);
+            out.write(response);
+        } catch (IOException e) {
+            return e.getCause().getMessage();
+        }
+        return readResponseWithCode();
+    }
+
+    @Override
     public void exit() {
         try {
+            timer.cancel();
             in.close();
             out.close();
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void listenTo() {
+        TimerTask timerTaskPoll = new TimerTask() {
+            @Override
+            public void run() {
+                if (isLoggedIn) {
+                    checkResponses();
+                }
+            }
+        };
+        timer = new Timer();
+        timer.scheduleAtFixedRate(timerTaskPoll, 500, 500);
+    }
+
+    private void checkResponses() {
+        checkMessage();
+        checkFile();
+        readResponseMessage();
+    }
+
+    private void checkFile() {
+        byte[] dataToSend = new byte[]{30};
+        try {
+            out.writeInt(dataToSend.length);
+            out.write(dataToSend);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            int contentSize = in.readInt();
+            byte[] message = new byte[contentSize];
+            in.readFully(message);
+            Optional<ProtocolManager.Response> serverResponse = toResponse(message);
+            if (!serverResponse.isPresent()) {
+                System.out.println(parseFile(message));
+            }
+        } catch (IOException e) {
+            System.out.println(e.getCause().getMessage());
+        }
+    }
+
+    private String parseFile(byte[] message) {
+        Object[] objectFile;
+        try {
+            objectFile = deserialize(message, Object[].class);
+            return "File " + objectFile[1] + " was received successfully!";
+        } catch (IOException | ClassNotFoundException e) {
+            return e.getMessage();
+        }
+    }
+
+    private void checkMessage() {
+        byte[] dataToSend = new byte[]{25};
+        try {
+            out.writeInt(dataToSend.length);
+            out.write(dataToSend);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            int contentSize = in.readInt();
+            byte[] message = new byte[contentSize];
+            in.readFully(message);
+            Optional<ProtocolManager.Response> serverResponse = toResponse(message);
+            if (!serverResponse.isPresent()) {
+                System.out.println(parseList(message, ":"));
+            }
+        } catch (IOException e) {
+            System.out.println(e.getCause().getMessage());
         }
     }
 
@@ -208,7 +296,6 @@ public class TCPClient implements MessageClient<String> {
             if (!serverResponse.isPresent()) {
                 return "Unknown response";
             } else {
-                isLoggedIn = true;
                 return serverResponse.get().information;
             }
         } catch (IOException e) {
@@ -240,6 +327,30 @@ public class TCPClient implements MessageClient<String> {
         ByteArrayInputStream in = new ByteArrayInputStream(data);
         ObjectInputStream is = new ObjectInputStream(in);
         return (T) is.readObject();
+    }
+
+    private byte[] handleFile(String receiver, File file) throws IOException {
+        byte[] commandArray = new byte[]{20};
+        String fileName = file.getName();
+        byte[] fileContent = readFileToByteArray(file);
+        byte[] requestParam = serialize(new Object[]{receiver, fileName, fileContent});
+        return concatArray(commandArray, requestParam);
+    }
+
+    private byte[] readFileToByteArray(File file) {
+        FileInputStream fis = null;
+        // Creating a byte array using the length of the file
+        // file.length returns long which is cast to int
+        byte[] bArray = new byte[(int) file.length()];
+        try {
+            fis = new FileInputStream(file);
+            fis.read(bArray);
+            fis.close();
+
+        } catch (IOException ioExp) {
+            ioExp.printStackTrace();
+        }
+        return bArray;
     }
 
 }

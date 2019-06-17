@@ -2,6 +2,8 @@ package lpi.client.utils;
 
 import lpi.client.MessageClient;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 public class RequestHandler {
@@ -12,6 +14,7 @@ public class RequestHandler {
 
     public RequestHandler(MessageClient<String> messageClient) {
         this.messageClient = messageClient;
+        messageClient.listenTo();
     }
 
     public String executeRequest(String command) {
@@ -37,6 +40,13 @@ public class RequestHandler {
                 return messageClient.list();
             case MSG:
                 return messageClient.message(parameters[0], parameters[1]);
+            case FILE:
+                File file = new File(parameters[1]);
+                try {
+                    return messageClient.sendFile(parameters[0], file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             case EXIT:
                 messageClient.exit();
                 return EXIT;
