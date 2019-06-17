@@ -10,7 +10,7 @@ Instructions to run:
 mvn exec:java -D"exec.mainClass"="lpi.Main"
 ```
 
-* You will be suggested choosing on of the clients or exit from program:
+* You will be suggested choosing one of the client to use or exit from program:
 1. RMI Client.
 2. TCP Client.
 3. REST Client.
@@ -18,7 +18,7 @@ mvn exec:java -D"exec.mainClass"="lpi.Main"
 5. TCP Client.
 6. Exit
 
-* Every client has implemented functions you can run by entering on og the following commands:
+* Every client has implemented functions you can run by entering one of the following command:
 1. ping
 2. echo {arg}
 3. login {loginName} {password}
