@@ -1,10 +1,7 @@
 package lpi;
 
 import lpi.client.MessageClient;
-import lpi.client.impl.JerseyClient;
-import lpi.client.impl.MQClient;
-import lpi.client.impl.RMIClient;
-import lpi.client.impl.TCPClient;
+import lpi.client.impl.*;
 import lpi.client.utils.RequestHandler;
 
 import java.rmi.NotBoundException;
@@ -22,7 +19,8 @@ public class Main {
             System.out.println("2. TCP Client.");
             System.out.println("3. REST Client.");
             System.out.println("4. MQ Client.");
-            System.out.println("5. Exit.");
+            System.out.println("5. SOAP Client.");
+            System.out.println("6. Exit.");
             int num = sc.nextInt();
             MessageClient<String> messageClient = null;
             switch (num) {
@@ -43,6 +41,9 @@ public class Main {
                     messageClient = MQClient.newClient("tcp://localhost:61616");
                     break;
                 case 5:
+                    messageClient = SOAPClient.newClient("http://localhost:4323/chat?wsdl");
+                    break;
+                case 6:
                     System.exit(0);
                     break;
                 default:
