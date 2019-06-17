@@ -1,7 +1,7 @@
 package lpi.client.impl;
 
 import lpi.client.MessageClient;
-import lpi.server.rmi.IServer;
+import lpi.client.additional.rmi.IServer;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;

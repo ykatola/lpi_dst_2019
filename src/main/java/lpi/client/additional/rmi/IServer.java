@@ -1,4 +1,4 @@
-package lpi.server.rmi;
+package lpi.client.additional.rmi;
 
 import java.io.File;
 import java.io.FileNotFoundException;
